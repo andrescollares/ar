@@ -24,7 +24,3 @@ redditor.comments
 
 redditor.subreddits # <- subreddits en los que participa
 
-
-
-
-
