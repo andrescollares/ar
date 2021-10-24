@@ -3,11 +3,10 @@ import igraph as ig
 import pandas as pd
 import pprint
 from datetime import datetime, timezone
+from graph_utils import graph_csv_to_dict, save_graphml
 
-# diccionario usuario -> Array de ususarios a los que responde.
 
-
-def emptyDataFrame():
+def _emptyDataFrame():
     return pd.DataFrame(
         columns=['commenter', 'responds_to', 'is_post', 'created_utc', 'score'])
 
@@ -17,7 +16,7 @@ def get_data(limit=10, save_every=10):
         client_id='BDKPcze-owFsIKSfxXXeJA',
         client_secret='Hj3Y2S1EhlqR3My35hameO0_kRMuxw',
         user_agent="un cosito by ar-crawler")
-    df = emptyDataFrame()
+    df = _emptyDataFrame()
     index_submi = 0
     comment_count = 0
     for submission in reddit.subreddit("uruguay").new(limit=limit):
@@ -45,11 +44,14 @@ def get_data(limit=10, save_every=10):
         # guardar en CSV cada cierto tiempo (default = 10 posts)
         if index_submi % save_every == 0:
             csv_string = df.to_csv(index=False, header=True)
-            with open("data.csv", "a") as csv:
+            with open("data/data.csv", "a") as csv:
                 csv.write(csv_string)
             print('CSV guardado.')
             utc_date = df.iloc[-1:]['created_utc']
             print(
                 f'Ultimo comentario: {datetime.utcfromtimestamp(utc_date).strftime("%Y/%m/%d")}')
             # reinicializo el dataset
-            df = emptyDataFrame()
+            df = _emptyDataFrame()
+    with open('data/data.csv', 'r') as csv:
+        respuestas = graph_csv_to_dict(csv)
+        save_graphml(respuestas, datetime.now().strftime("%m-%d-%Y-%H:%M"))
