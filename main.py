@@ -12,7 +12,7 @@ try:
     f = open('data/comments.csv', 'r')
 except FileNotFoundError:
     print("Obteniendo datos...")
-    get_data(limit=100)
+    get_data(limit=1000000)
 except Exception as err:
     print(f"Unexpected error opening csv is", repr(err))
     sys.exit(1)
