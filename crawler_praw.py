@@ -29,7 +29,7 @@ def get_data(limit=10, save_every=10):
     index_submi = 0
     comment_count = 0
     df_posts = _postsDataFrame()
-    for submission in reddit.subreddit("uruguay").new(limit=limit):
+    for submission in reddit.subreddit("uruguay").top(time_filter="year", limit=limit):
         submission_id = submission.id
         post_attrs = [getattr(submission, key) for key in post_attrs_columns]
         df_posts.loc[df_posts.shape[0]] = post_attrs
@@ -57,11 +57,11 @@ def get_data(limit=10, save_every=10):
         print(f"Posts: {index_submi}, comentarios totales: {comment_count}")
         # guardar en CSV cada cierto tiempo (default = 10 posts)
         if index_submi % save_every == 0:
-            _saveDataCsv('comments', df_comments, index_submi == save_every)
-            _saveDataCsv('posts', df_posts, index_submi == save_every)
+            _saveDataCsv('comments_top', df_comments, index_submi == save_every)
+            _saveDataCsv('posts_top', df_posts, index_submi == save_every)
             utc_date = df_comments.iloc[-1:]['created_utc']
             print(f'Ultimo comentario: {datetime.utcfromtimestamp(utc_date).strftime("%Y/%m/%d")}')
             df_comments = _commentsDataFrame()
             df_posts = _postsDataFrame()
-    with open('data/comments.csv', 'r') as csv:
+    with open('data/comments_top.csv', 'r') as csv:
         save_graphml(csv)
