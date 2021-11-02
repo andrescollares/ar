@@ -57,11 +57,11 @@ def get_data(limit=10, save_every=10):
         print(f"Posts: {index_submi}, comentarios totales: {comment_count}")
         # guardar en CSV cada cierto tiempo (default = 10 posts)
         if index_submi % save_every == 0:
-            _saveDataCsv('comments_top', df_comments, index_submi == save_every)
-            _saveDataCsv('posts_top', df_posts, index_submi == save_every)
+            _saveDataCsv('comments', df_comments, index_submi == save_every)
+            _saveDataCsv('posts', df_posts, index_submi == save_every)
             utc_date = df_comments.iloc[-1:]['created_utc']
             print(f'Ultimo comentario: {datetime.utcfromtimestamp(utc_date).strftime("%Y/%m/%d")}')
             df_comments = _commentsDataFrame()
             df_posts = _postsDataFrame()
-    with open('data/comments_top.csv', 'r') as csv:
+    with open('data/comments.csv', 'r') as csv:
         save_graphml(csv)

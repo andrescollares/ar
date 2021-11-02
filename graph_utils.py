@@ -2,7 +2,6 @@ import igraph as ig
 import csv
 import json
 from functools import reduce
-
 from datetime import datetime
 
 from constants import comment_calculated_attrs, comment_extra_attrs
