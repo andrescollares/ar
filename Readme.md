@@ -1,4 +1,4 @@
-# Data Analysis in Complex Networks - Homework
+# Data Analysis in Complex Networks
 
 ## Google Colab notebooks
 
